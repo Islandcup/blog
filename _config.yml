@@ -4,11 +4,11 @@ author:
   email: Mislandcup@gmail.com
 description: 随笔
 theme: minima
-plugins:
+plugins: 
   - jekyll-seo-tag
-sass:
+sass: 
   quiet_deps: true
   silence_deprecations: [import]
-minima:
+minima: 
   skin: solarized
   show_excerpts: true
