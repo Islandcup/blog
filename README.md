@@ -15,16 +15,22 @@
 
 ```
 blog/
-├── index.html          # 首页
+├── index.html          # 首页（含分类筛选）
 ├── post.html           # 文章详情页
 ├── about.html          # 关于页面
 ├── css/
 │   └── style.css       # 样式文件
 ├── js/
-│   ├── main.js         # 首页逻辑
-│   └── post.js         # 文章详情逻辑
+│   ├── main.js         # 首页逻辑（分类筛选+渲染）
+│   └── post.js         # 文章详情逻辑（加载 .md 渲染）
 ├── data/
-│   └── posts.json      # 文章数据
+│   └── posts.json      # 文章元数据（轻量，仅含标题/日期/标签/摘要）
+├── posts/              # 📝 文章正文（独立 .md 文件）
+│   ├── hello-world.md
+│   ├── markdown-guide.md
+│   ├── reading-2026.md
+│   ├── vs-code-productivity.md
+│   └── css-grid-layout.md
 └── README.md
 ```
 
@@ -92,27 +98,50 @@ jobs:
 
 ## ✏️ 如何添加新文章
 
-1. 打开 `data/posts.json`
-2. 在数组中添加一个新对象，格式如下：
+添加一篇新文章需要两步：
+
+### 步骤一：创建文章正文
+
+在 `posts/` 目录下新建一个 `.md` 文件，例如 `posts/my-new-post.md`：
+
+```markdown
+这是我的第一篇博客文章正文。
+
+## 章节一
+
+这里可以写任何 **Markdown** 内容，包括：
+
+- 列表
+- `代码`
+- > 引用
+- 等等...
+```
+
+### 步骤二：注册元数据
+
+打开 `data/posts.json`，在数组中添加元数据：
 
 ```json
 {
-  "id": "article-url-slug",
+  "id": "my-new-post",
   "title": "文章标题",
   "date": "2026-07-27",
   "tags": ["标签1", "标签2"],
-  "coverDescription": "封面图描述",
-  "excerpt": "文章摘要，显示在首页卡片上",
-  "content": [
-    "第一段文字",
-    "## 二级标题",
-    "更多段落...",
-    "支持 **加粗**、*斜体*、`代码` 等 Markdown 语法"
-  ]
+  "excerpt": "文章摘要，显示在首页卡片上"
 }
 ```
 
-3. 提交并推送，GitHub Pages 会自动更新
+> `id` 必须与 `.md` 文件名一致（不含扩展名），例如 `my-new-post` → `posts/my-new-post.md`
+
+### 步骤三：提交并推送
+
+```bash
+git add .
+git commit -m "新增文章：文章标题"
+git push
+```
+
+GitHub Pages 会自动部署更新。
 
 ### 支持的 Markdown 语法
 

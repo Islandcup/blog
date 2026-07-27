@@ -44,11 +44,24 @@
     </div>
   </header>
 
+  <!-- 分类筛选 -->
+  <section class="categories-section">
+    <div class="container">
+      <div class="categories-header">
+        <h2>🏷️ 分类</h2>
+        <span class="categories-hint">点击分类筛选文章</span>
+      </div>
+      <div class="categories-list" id="categoriesList">
+        <button class="category-btn active" data-category="all">全部</button>
+      </div>
+    </div>
+  </section>
+
   <!-- 文章列表 -->
   <main class="posts-section">
     <div class="container">
       <div class="section-header">
-        <h2>📝 最新文章</h2>
+        <h2>📝 <span id="sectionTitle">最新文章</span></h2>
         <span class="post-count" id="postCount"></span>
       </div>
       <div class="posts-list" id="postsList">

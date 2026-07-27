@@ -239,9 +239,73 @@ img {
   margin: 24px auto 0;
 }
 
+/* ---- 分类筛选 ---- */
+.categories-section {
+  padding: 0 0 24px;
+}
+
+.categories-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.categories-header h2 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--color-text-secondary);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.categories-hint {
+  font-size: 0.8rem;
+  color: var(--color-text-muted);
+}
+
+.categories-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.category-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 18px;
+  border: 1px solid var(--color-border);
+  border-radius: 24px;
+  background: var(--color-bg-card);
+  color: var(--color-text-secondary);
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--transition);
+  font-family: var(--font-sans);
+  user-select: none;
+}
+
+.category-btn:hover {
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+  background: var(--color-accent-light);
+}
+
+.category-btn.active {
+  background: var(--color-accent);
+  color: #ffffff;
+  border-color: var(--color-accent);
+}
+
+.category-btn.active:hover {
+  background: var(--color-accent-dark);
+}
+
 /* ---- 文章列表 ---- */
 .posts-section {
-  padding: 32px 0 80px;
+  padding: 8px 0 80px;
 }
 
 .section-header {
@@ -789,6 +853,17 @@ img {
 
   .post-title {
     font-size: 1.6rem;
+  }
+
+  .categories-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+
+  .category-btn {
+    padding: 6px 14px;
+    font-size: 0.8rem;
   }
 
   .menu-toggle {

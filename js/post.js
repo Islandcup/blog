@@ -194,16 +194,20 @@ async function loadPost() {
   }
 
   try {
-    const response = await fetch('data/posts.json');
-    if (!response.ok) throw new Error('Failed to load posts');
-
-    const posts = await response.json();
+    // 加载元数据
+    const metaResp = await fetch('data/posts.json');
+    if (!metaResp.ok) throw new Error('Failed to load posts metadata');
+    const posts = await metaResp.json();
     const post = posts.find(p => p.id === postId);
-
     if (!post) {
       showError('文章不存在');
       return;
     }
+
+    // 加载 .md 文件内容
+    const mdResp = await fetch(`posts/${postId}.md`);
+    if (!mdResp.ok) throw new Error('Failed to load article content');
+    post.mdContent = await mdResp.text();
 
     renderPost(post, posts);
   } catch (error) {
@@ -235,7 +239,7 @@ function renderPost(post, allPosts) {
   // 文章元信息
   const metaEl = document.getElementById('postMeta');
   if (metaEl) {
-    const readTime = estimateReadTime(post.content);
+    const readTime = estimateReadTime(post.mdContent);
     metaEl.innerHTML = `
       <span class="meta-item">📅 ${formatDate(post.date)}</span>
       <span class="dot"></span>
@@ -243,11 +247,10 @@ function renderPost(post, allPosts) {
     `;
   }
 
-  // 文章内容
+  // 文章内容（直接渲染 .md 全文）
   const contentEl = document.getElementById('postContent');
   if (contentEl) {
-    const contentHtml = post.content.map(block => renderMarkdown(block)).join('\n');
-    contentEl.innerHTML = contentHtml;
+    contentEl.innerHTML = renderMarkdown(post.mdContent);
   }
 
   // 文章标签
@@ -298,12 +301,11 @@ function renderPost(post, allPosts) {
 }
 
 // ---- 估计阅读时间 ----
-function estimateReadTime(contentArray) {
-  if (!contentArray || contentArray.length === 0) return 1;
-  const text = contentArray.join(' ');
+function estimateReadTime(markdownText) {
+  if (!markdownText) return 1;
   // 中文字数 / 300 ≈ 分钟，英文词数 / 200 ≈ 分钟
-  const chineseChars = (text.match(/[\u4e00-\u9fff]/g) || []).length;
-  const englishWords = (text.match(/[a-zA-Z]+/g) || []).length;
+  const chineseChars = (markdownText.match(/[\u4e00-\u9fff]/g) || []).length;
+  const englishWords = (markdownText.match(/[a-zA-Z]+/g) || []).length;
   const minutes = Math.ceil(chineseChars / 300 + englishWords / 200);
   return Math.max(1, minutes);
 }
