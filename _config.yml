@@ -2,7 +2,7 @@ title: 虫巢
 author: Island
 description: 随笔
 theme: minima
-show_rss: false
 minima: 
   skin: solarized
   show_excerpts: true
+  show_rss: false
