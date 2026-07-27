@@ -1,2 +1,9 @@
-theme: minima
 title: 虫巢
+author:
+  name: Island
+  email: Mislandcup@gmail.com
+description: 随笔
+theme: minima
+minima:
+  skin: solarized
+  show_excerpts: ture
