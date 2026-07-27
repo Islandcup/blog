@@ -1,4 +1,3 @@
 ---
-title: 我的博客
-description: 记录我的随笔和生活思考
+layout: home
 ---
