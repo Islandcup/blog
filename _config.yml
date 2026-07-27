@@ -1,8 +1,4 @@
 title: 虫巢
 author: Island
 description: 随笔
-theme: minima
-minima: 
-  skin: solarized
-  show_excerpts: true
-  hide_site_feed_link: true
+theme: jekyll-theme-minimal
