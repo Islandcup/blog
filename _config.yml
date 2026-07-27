@@ -1,14 +1,8 @@
 title: 虫巢
-author: 
-  name: Island
-  email: Mislandcup@gmail.com
+author: Island
 description: 随笔
 theme: minima
-plugins: 
-  - jekyll-seo-tag
-sass: 
-  quiet_deps: true
-  silence_deprecations: [import]
+show_rss: false
 minima: 
   skin: solarized
   show_excerpts: true
