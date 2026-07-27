@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="虫巢博客文章">
+  <meta name="theme-color" content="#2d7d6a">
+  <meta property="og:title" content="" id="ogTitle">
+  <meta property="og:description" content="" id="ogDescription">
+  <meta property="og:type" content="article">
+  <title id="pageTitle">虫巢</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Serif+SC:wght@400;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🪲</text></svg>">
+</head>
+<body>
+  <!-- 导航栏 -->
+  <nav class="navbar">
+    <div class="navbar-inner">
+      <a href="index.html" class="navbar-brand">
+        <span class="logo-icon">🪲</span>
+        <span>虫巢</span>
+      </a>
+      <button class="menu-toggle" id="menuToggle" aria-label="菜单">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+      <ul class="navbar-links" id="navLinks">
+        <li><a href="index.html">首页</a></li>
+        <li><a href="about.html">关于</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- 文章内容 -->
+  <main class="container">
+    <article id="postArticle">
+      <div class="post-header">
+        <a href="index.html" class="post-back">← 返回首页</a>
+        <div id="postLoading">
+          <div class="skeleton">
+            <div class="skeleton-line"></div>
+            <div class="skeleton-line"></div>
+            <div class="skeleton-line"></div>
+            <div class="skeleton-line"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 文章头部（由 JS 填充） -->
+      <div id="postHeader" style="display: none;">
+        <h1 class="post-title" id="postTitle"></h1>
+        <div class="post-meta" id="postMeta"></div>
+      </div>
+
+      <!-- 文章正文（由 JS 填充） -->
+      <div class="post-content" id="postContent"></div>
+
+      <!-- 文章底部导航 -->
+      <div class="post-footer-section" id="postFooter" style="display: none;">
+        <div class="post-tags" id="postTags"></div>
+        <div class="post-nav" id="postNav">
+          <a href="#" class="post-nav-link prev" id="prevPost" style="display: none;">
+            <div class="nav-label">← 上一篇</div>
+            <div class="nav-title" id="prevTitle"></div>
+          </a>
+          <a href="#" class="post-nav-link next" id="nextPost" style="display: none;">
+            <div class="nav-label">下一篇 →</div>
+            <div class="nav-title" id="nextTitle"></div>
+          </a>
+        </div>
+      </div>
+    </article>
+  </main>
+
+  <!-- 页脚 -->
+  <footer class="footer">
+    <div class="container">
+      <p>&copy; 2026 虫巢 · 用 🪲 记录世界</p>
+      <div class="footer-links">
+        <a href="index.html">首页</a>
+        <a href="about.html">关于</a>
+        <a href="https://github.com" target="_blank" rel="noopener">GitHub</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/post.js"></script>
+</body>
+</html>
