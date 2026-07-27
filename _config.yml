@@ -5,4 +5,4 @@ theme: minima
 minima: 
   skin: solarized
   show_excerpts: true
-  show_rss: false
+  hide_site_feed_link: true
