@@ -2,33 +2,6 @@
 // 虫巢 - 文章详情页 JavaScript
 // ==========================================
 
-// ---- 移动端菜单切换 ----
-document.addEventListener('DOMContentLoaded', () => {
-  const menuToggle = document.getElementById('menuToggle');
-  const navLinks = document.getElementById('navLinks');
-
-  if (menuToggle && navLinks) {
-    menuToggle.addEventListener('click', () => {
-      navLinks.classList.toggle('open');
-    });
-
-    navLinks.querySelectorAll('a').forEach(link => {
-      link.addEventListener('click', () => {
-        navLinks.classList.remove('open');
-      });
-    });
-  }
-});
-
-// ---- 格式化日期 ----
-function formatDate(dateStr) {
-  const date = new Date(dateStr);
-  const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(2, '0');
-  const day = String(date.getDate()).padStart(2, '0');
-  return `${year} 年 ${month} 月 ${day} 日`;
-}
-
 // ---- 简单的 Markdown 渲染器 ----
 // 将 Markdown 文本转换为 HTML
 function renderMarkdown(text) {
@@ -243,7 +216,6 @@ async function loadPost() {
 function renderPost(post, allPosts) {
   // 更新页面标题和 SEO
   document.title = `${post.title} - 虫巢`;
-  document.getElementById('pageTitle').textContent = `${post.title} - 虫巢`;
   document.getElementById('ogTitle').setAttribute('content', post.title);
   document.getElementById('ogDescription').setAttribute('content', post.excerpt || '');
 
@@ -286,11 +258,7 @@ function renderPost(post, allPosts) {
   // 上下篇文章导航
   const currentIndex = allPosts.findIndex(p => p.id === post.id);
 
-  const prevPost = currentIndex < allPosts.length - 1 ? allPosts[currentIndex + 1] : null;
-  const nextPost = currentIndex > 0 ? allPosts[currentIndex - 1] : null;
-
-  // 注意：文章按日期倒序排列，所以 prev 是 index+1（更早的），next 是 index-1（更新的）
-  // 但我们按数组中顺序来，数组是按日期降序的
+  // 文章按日期降序排列，index-1 为更新的文章，index+1 为更早的文章
   const newerPost = currentIndex > 0 ? allPosts[currentIndex - 1] : null;
   const olderPost = currentIndex < allPosts.length - 1 ? allPosts[currentIndex + 1] : null;
 

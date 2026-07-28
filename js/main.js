@@ -5,33 +5,6 @@
 let allPosts = [];
 let activeCategory = 'all';
 
-// ---- 移动端菜单切换 ----
-document.addEventListener('DOMContentLoaded', () => {
-  const menuToggle = document.getElementById('menuToggle');
-  const navLinks = document.getElementById('navLinks');
-
-  if (menuToggle && navLinks) {
-    menuToggle.addEventListener('click', () => {
-      navLinks.classList.toggle('open');
-    });
-
-    navLinks.querySelectorAll('a').forEach(link => {
-      link.addEventListener('click', () => {
-        navLinks.classList.remove('open');
-      });
-    });
-  }
-});
-
-// ---- 格式化日期 ----
-function formatDate(dateStr) {
-  const date = new Date(dateStr);
-  const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(2, '0');
-  const day = String(date.getDate()).padStart(2, '0');
-  return `${year} 年 ${month} 月 ${day} 日`;
-}
-
 // ---- 将摘要中的 Markdown 转换为 HTML ----
 function renderExcerpt(text) {
   if (!text) return '';
@@ -69,6 +42,13 @@ function createPostCard(post) {
     window.location.href = `post.html?id=${post.id}`;
   });
 
+  card.addEventListener('auxclick', (e) => {
+    if (e.button === 1) {
+      e.preventDefault();
+      window.open(`post.html?id=${post.id}`, '_blank');
+    }
+  });
+
   card.setAttribute('tabindex', '0');
   card.setAttribute('role', 'link');
   card.addEventListener('keydown', (e) => {
@@ -104,7 +84,8 @@ function renderCategories(posts) {
     '读书': '📚',
     '生活': '🌿',
     '站点日志': '📌',
-    '杂谈': '💭'
+    '杂谈': '💭',
+    '设定': '📖'
   };
 
   categories.forEach(cat => {
@@ -127,6 +108,8 @@ function filterByCategory(category) {
   document.querySelectorAll('.category-btn').forEach(btn => {
     btn.classList.toggle('active', btn.dataset.category === category);
   });
+
+  window.location.hash = category === 'all' ? '' : category;
 
   const sectionTitle = document.getElementById('sectionTitle');
   if (sectionTitle) {
@@ -185,6 +168,15 @@ async function loadPosts() {
 
     renderCategories(allPosts);
     renderPostList(allPosts);
+
+    // 从 URL Hash 恢复分类筛选状态
+    const hash = window.location.hash.slice(1);
+    if (hash) {
+      const allCats = extractCategories(allPosts);
+      if (allCats.includes(hash)) {
+        filterByCategory(hash);
+      }
+    }
   } catch (error) {
     console.error('加载文章失败:', error);
     postsList.innerHTML = `
