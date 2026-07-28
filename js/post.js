@@ -34,7 +34,8 @@ function formatDate(dateStr) {
 function renderMarkdown(text) {
   if (!text) return '';
 
-  let html = text;
+  // 统一换行符（处理 Windows 的 \r\n）
+  let html = text.replace(/\r\n/g, '\n');
 
   // 代码块 (先处理，避免被后续规则污染)
   html = html.replace(/```(\w*)\n([\s\S]*?)```/g, (match, lang, code) => {
@@ -68,20 +69,42 @@ function renderMarkdown(text) {
   // 有序列表
   html = html.replace(/^\d+\. (.+)$/gm, '<li>$1</li>');
 
-  // 表格
-  html = html.replace(/^\|(.+)\|$/gm, (match, row) => {
-    const cells = row.split('|').map(c => c.trim());
-    // 跳过表头分隔行 (|---|---|)
-    if (cells.every(c => /^[-:]+$/.test(c))) return '';
-    return `<tr>${cells.map(c => {
-      if (c.startsWith(':') && c.endsWith(':')) return `<td style="text-align:center">${c.slice(1, -1)}</td>`;
-      if (c.endsWith(':')) return `<td style="text-align:right">${c.slice(0, -1)}</td>`;
-      return `<td>${c}</td>`;
-    }).join('')}</tr>`;
-  });
+  // 表格 - 处理完整的 Markdown 表格块
+  html = html.replace(/(^\|.+\|\n?)+/gm, (match) => {
+    const rows = match.trim().split('\n').filter(r => r.trim());
+    if (rows.length < 2) return match; // 至少需要表头和分隔行
 
-  // 合并表格
-  html = html.replace(/(<tr>.*<\/tr>\n?)+/g, '<table>$&</table>');
+    // 解析分隔行获取列对齐方式
+    const alignments = rows[1].split('|').filter((_, i, arr) => i > 0 && i < arr.length - 1).map(c => {
+      const t = c.trim();
+      if (t.startsWith(':') && t.endsWith(':')) return 'center';
+      if (t.endsWith(':')) return 'right';
+      return 'left';
+    });
+
+    let tableHtml = '<table>\n  <thead>\n    <tr>';
+    // 表头行
+    const headerCells = rows[0].split('|').filter((_, i, arr) => i > 0 && i < arr.length - 1).map(c => c.trim());
+    tableHtml += headerCells.map((c, i) => {
+      const align = alignments[i] && alignments[i] !== 'left' ? ` style="text-align:${alignments[i]}"` : '';
+      return `<th${align}>${c}</th>`;
+    }).join('');
+    tableHtml += '</tr>\n  </thead>\n  <tbody>\n';
+
+    // 数据行（从第3行开始，跳过分隔行）
+    for (let i = 2; i < rows.length; i++) {
+      const cells = rows[i].split('|').filter((_, idx, arr) => idx > 0 && idx < arr.length - 1).map(c => c.trim());
+      tableHtml += '    <tr>';
+      tableHtml += cells.map((c, j) => {
+        const align = alignments[j] && alignments[j] !== 'left' ? ` style="text-align:${alignments[j]}"` : '';
+        return `<td${align}>${c}</td>`;
+      }).join('');
+      tableHtml += '</tr>\n';
+    }
+
+    tableHtml += '  </tbody>\n</table>';
+    return tableHtml;
+  });
 
   // 引用
   html = html.replace(/^> (.+)$/gm, '<blockquote><p>$1</p></blockquote>');
