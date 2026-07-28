@@ -75,6 +75,14 @@ function renderCategories(posts) {
   const container = document.getElementById('categoriesList');
   if (!container) return;
 
+  // 为已有的"全部"按钮绑定点击事件
+  const allBtn = container.querySelector('[data-category="all"]');
+  if (allBtn) {
+    allBtn.addEventListener('click', () => {
+      filterByCategory('all');
+    });
+  }
+
   const categories = extractCategories(posts);
   const categoryIcons = {
     '技术': '💻',
