@@ -154,8 +154,9 @@ function renderMarkdown(text) {
       continue;
     }
 
-    // 已经是 HTML 标签开头的行直接保留
-    if (line.trim().startsWith('<')) {
+    // 已经是块级 HTML 标签开头的行直接保留（行内元素如 <em> <strong> 仍需包在 <p> 中）
+    const blockLevelTags = ['<h1', '<h2', '<h3', '<h4', '<h5', '<h6', '<pre', '<blockquote', '<ul', '<ol', '<li', '<table', '<tr', '<td', '<th', '<hr', '<dl', '<dt', '<dd'];
+    if (blockLevelTags.some(tag => line.trim().startsWith(tag))) {
       result += line + '\n';
       continue;
     }
